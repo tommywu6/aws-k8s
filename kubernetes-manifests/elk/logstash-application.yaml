@@ -8,14 +8,12 @@ data:
   logstash.conf: |-
     input {
       tcp {
-        port => 5000
+        port => 5044
       }
     }
     output {
       elasticsearch {
-        hosts => "elasticsearch-logging.elasticsearch:9200"
-        index => "logstash-%{+YYYY.MM.dd}"
-        sniffing => false
+        hosts => "elasticsearch:9200"
       }
     }
   logstash.yml: |-
@@ -36,11 +34,11 @@ spec:
         app: logstash-application
     spec:
       containers:
-      - image: docker.elastic.co/logstash/logstash:5.5.0
+      - image: docker.elastic.co/logstash/logstash-oss:6.2.4
         name: logstash-application
         ports:
         - name: logstash
-          containerPort: 5000
+          containerPort: 5044
           protocol: TCP
         volumeMounts:
         - name: config
@@ -55,10 +53,10 @@ spec:
         - /usr/share/logstash/pipeline/logstash.conf
         resources:
           limits:
-            memory: 1Gi
+            memory: 256Mi
             cpu: "200m"
           requests:
-            memory: 1Gi
+            memory: 256Mi
             cpu: "200m"
       volumes:
       - name: pipeline
@@ -87,6 +85,6 @@ spec:
     app: logstash-application
   ports:
   - name: logstash
-    port: 5000
-    targetPort: 5000
+    port: 5044
+    targetPort: 5044
     protocol: TCP

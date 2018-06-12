@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: cfontes/kibana-xpack-less:5.5.0
+        image: docker.elastic.co/kibana/kibana-oss:6.2.4
         env:
         - name: ELASTICSEARCH_URL
           value: "http://elasticsearch-logging:9200"
